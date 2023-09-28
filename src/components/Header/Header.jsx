@@ -1,7 +1,10 @@
+import { Link } from "react-router-dom";
+
 const Header = () => {
   return (
-    <div>
-      <h3>This Is Header</h3>
+    <div className="flex gap-4">
+      <Link to="/">Home</Link>
+      <Link to="/login">Login</Link>
     </div>
   );
 };
