@@ -1,17 +1,20 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import app from "../../firebase/firebase.init";
+import { useState } from "react";
 const Login = () => {
+  const [user, setUser] = useState(null);
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
   const handleGoogleLogin = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        const user = result.user;
-        console.log(user);
+        const loggedUser = result.user;
+        setUser(loggedUser);
       })
       .catch((error) => console.log(error));
   };
+  console.log(user);
   return (
     <div className="my-10 mx-auto relative flex w-96 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
       <div className="relative mx-4 -mt-6 mb-4 grid h-28 place-items-center overflow-hidden rounded-xl bg-gradient-to-tr from-pink-600 to-pink-400 bg-clip-border text-white shadow-lg shadow-pink-500/40">
@@ -78,6 +81,7 @@ const Login = () => {
       </div>
       <div className="p-6 pt-0">
         <button
+          onClick={handleGoogleLogin}
           className="block w-full select-none rounded-lg bg-gradient-to-tr from-pink-600 to-pink-400 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
           type="button"
           data-ripple-light="true"
@@ -86,7 +90,7 @@ const Login = () => {
         </button>
         <hr />
         <div className="bg-purple-600 px-4 py-2 mt-3 rounded-xl text-white font-bold">
-          <button onClick={handleGoogleLogin}>Sign In With Google</button>
+          <button onClick={handleSignOut}>Sign Out</button>
         </div>
         <p className="mt-6 flex justify-center font-sans text-sm font-light leading-normal text-inherit antialiased">
           Dont have an account?
@@ -98,6 +102,11 @@ const Login = () => {
           </a>
         </p>
       </div>
+      {user && (
+        <div>
+          <h1 className="text-3xl">User: {user.displayName}</h1>
+        </div>
+      )}
     </div>
   );
 };
